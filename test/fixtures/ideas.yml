@@ -1,17 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  category: one
-  hacker: one
-  status: 1
+food_idea:
+  category: food
+  hacker: jet
+  status: 0
   progress: 1
-  description: MyString
-  specialties: MyText
+  title: Food Trip
+  specialties: Devs, Designer
 
-two:
-  category: two
-  hacker: two
+travel_idea:
+  category: travel
+  hacker: jet
   status: 1
   progress: 1
-  description: MyString
-  specialties: MyText
+  title: Travel Booking
+  specialties: Dev, Marketing

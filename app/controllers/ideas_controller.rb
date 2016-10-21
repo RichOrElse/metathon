@@ -1,5 +1,8 @@
 class IdeasController < ApplicationController
+  before_action :authenticate_hacker!
+  before_action :set_categories, only: [:new, :edit, :create, :update]
   before_action :set_idea, only: [:show, :edit, :update, :destroy]
+
 
   # GET /ideas
   # GET /ideas.json
@@ -14,7 +17,7 @@ class IdeasController < ApplicationController
 
   # GET /ideas/new
   def new
-    @idea = Idea.new
+    @idea = Idea.new(hacker: current_hacker)
   end
 
   # GET /ideas/1/edit
@@ -24,7 +27,7 @@ class IdeasController < ApplicationController
   # POST /ideas
   # POST /ideas.json
   def create
-    @idea = Idea.new(idea_params)
+    @idea = Idea.new idea_params.merge(hacker: current_hacker)
 
     respond_to do |format|
       if @idea.save
@@ -67,8 +70,12 @@ class IdeasController < ApplicationController
       @idea = Idea.find(params[:id])
     end
 
+    def set_categories
+      @categories = Category.all
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def idea_params
-      params.require(:idea).permit(:category_id, :hacker_id, :status, :progress, :description, :specialties)
+      params.require(:idea).permit(:category_id, :hacker_id, :status, :progress, :title, :description, :specialties)
     end
 end
