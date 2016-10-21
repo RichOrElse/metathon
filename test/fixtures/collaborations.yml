@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  idea: one
+  project: one
+  hacker: one
+
+two:
+  idea: two
+  project: two
+  hacker: two
