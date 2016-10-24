@@ -1,47 +1,52 @@
-<%= form_for(idea) do |f| %>
-  <% if idea.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(idea.errors.count, "error") %> prohibited this idea from being saved:</h2>
+<div class="container">
+  <%= form_for(idea, class: 'form-vertical') do |f| %>
+    <% if idea.errors.any? %>
+      <div id="error_explanation" class="alert alert-danger">
+        <h2><%= pluralize(idea.errors.count, "error") %> prohibited this idea from being saved:</h2>
 
-      <ul>
-      <% idea.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+        <ul>
+        <% idea.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="field form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+
+    <div class="field form-group">
+      <%= f.label :description %>
+      <%= f.text_field :description, class: "form-control" %>
+    </div>
+
+    <div class="field form-group">
+      <%= f.label :specialties %>
+      <%= f.text_area :specialties, class: "form-control" %>
+    </div>
+
+
+    <div class="field form-group">
+      <%= f.label :category %>
+      <%= f.collection_select :category_id, @categories, :id, :name, class: "dropdown-toggle" %>
+    </div>
+
+    <div class="field form-group">
+      <%= f.label :status %>
+      <%= f.collection_select :status, Idea.statuses, :first, :first, class: "dropdown-toggle" %>
+
+    </div>
+
+    <div class="field form-group">
+      <%= f.label :progress %>
+      <%= f.number_field :progress, class: "form-control" %>
+    </div>
+
+    <div class="actions form-group">
+      <%= f.submit :class => 'btn btn-lg btn-primary btn-block' %>
+      <%= link_to 'Cancel', :back, :class => 'btn btn-lg btn-default btn-block'  %>
     </div>
   <% end %>
-  <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
 
-  <div class="field">
-    <%= f.label :description %>
-    <%= f.text_field :description %>
-  </div>
-
-  <div class="field">
-    <%= f.label :specialties %>
-    <%= f.text_area :specialties %>
-  </div>
-
-
-  <div class="field">
-    <%= f.label :category %>
-    <%= f.collection_select :category_id, @categories, :id, :name %>
-  </div>
-
-  <div class="field">
-    <%= f.label :status %>
-    <%= f.number_field :status %>
-  </div>
-
-  <div class="field">
-    <%= f.label :progress %>
-    <%= f.number_field :progress %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

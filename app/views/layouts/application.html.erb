@@ -2,26 +2,44 @@
 <html>
   <head>
     <title>Metathon</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    | <%= link_to "Hackathons", root_path %> | <%= link_to "Ideas", ideas_path %> | 
-    <%= 
-      if hacker_signed_in?
-        link_to  'Logout', destroy_hacker_session_path, method: :delete
-      else
-      	link_to  'Login', new_hacker_session_path
-      end
-    %> |
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><%= link_to 'Hackathons', root_path %></li>
+            <li><%= link_to 'Ideas', ideas_path %></li>
+            <% if hacker_signed_in? %>
+                <li><%= link_to  "Logout #{current_hacker.name}", destroy_hacker_session_path, method: :delete %></li>
+            <% else %>
+                <li><%= link_to  'Login', new_hacker_session_path %></li>
+            <% end %>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-
-    <%= yield %>
-
+    
+    <main>
+      <%= yield %>
+    </main>
   </body>
 </html>

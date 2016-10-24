@@ -1,0 +1,12 @@
+<% hackathons.each do |hackathon| %>
+<p width="100px">
+  <strong><%= link_to hackathon.title, hackathon %></strong> 
+  <%= 
+    if hackathon.entered?(idea)
+      button_to 'Leave Hackathon', leave_hackathon_path(hackathon, idea_id: idea.id), method: :delete
+    else
+      button_to 'Join Hackathon', join_hackathon_path(hackathon, idea_id: idea.id)
+    end
+    %>
+</p>
+<% end %>

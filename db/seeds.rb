@@ -6,7 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-
-Hacker.create name: "Ritchie", email: 'ritchie.buitre@indinero.com', password: 'password' if Hacker.count.zero?
+if Hacker.count.zero?
+  Hacker.create name: "Ritchie", email: 'ritchie.buitre@indinero.com', password: 'password' 
+  Hacker.create name: "Jet", email: 'jet.mariscal@indinero.com', password: 'password'
+end
 
 Category.create [{name: 'Food'}, {name: 'Travel'}] if Category.count.zero?

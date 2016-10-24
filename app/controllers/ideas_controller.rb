@@ -1,18 +1,18 @@
 class IdeasController < ApplicationController
   before_action :authenticate_hacker!
   before_action :set_categories, only: [:new, :edit, :create, :update]
-  before_action :set_idea, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_idea, only: [:show, :edit, :update, :destroy, :join, :leave]
 
   # GET /ideas
   # GET /ideas.json
   def index
-    @ideas = Idea.all
+    @ideas = Idea.all.decorate
   end
 
   # GET /ideas/1
   # GET /ideas/1.json
   def show
+    @hackathons = @idea.hacker == current_hacker ? Hackathon.all : []
   end
 
   # GET /ideas/new
@@ -27,7 +27,7 @@ class IdeasController < ApplicationController
   # POST /ideas
   # POST /ideas.json
   def create
-    @idea = Idea.new idea_params.merge(hacker: current_hacker)
+    @idea = current_hacker.create_idea idea_params
 
     respond_to do |format|
       if @idea.save
@@ -62,6 +62,16 @@ class IdeasController < ApplicationController
       format.html { redirect_to ideas_url, notice: 'Idea was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def join
+    current_hacker.join @idea 
+    redirect_to @idea, notice: 'Idea was successfully joined.' 
+  end
+
+  def leave
+    current_hacker.leave @idea 
+    redirect_to @idea, notice: 'Idea was successfully left.' 
   end
 
   private

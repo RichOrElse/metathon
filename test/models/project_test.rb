@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Collaboration::ProjectTest < ActiveSupport::TestCase
+class ProjectTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

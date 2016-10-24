@@ -1,24 +1,11 @@
-# README
+# METATHON
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Hackathon CMS since spreadsheets are no longer enough.
 
-Things you may want to cover:
+Hackers:
 
-* Ruby version
+* Jet
 
-* System dependencies
+* Ritchie
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* JP

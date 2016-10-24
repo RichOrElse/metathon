@@ -1,34 +1,64 @@
-<h1><%= @idea.title %></h1>
+<div class="container">
+  <h1><%= @idea.title %></h1>
 
-<p>
-  <strong>Category:</strong>
-  <%= @idea.category.name %>
-</p>
+  <div class="row">
+    <div class="col-sm-6">
+      <p>
+        <strong>Hackers:</strong>
+        <%= render @idea.hackers %>
+      </p>
 
-<p>
-  <strong>Hacker:</strong>
-  <%= @idea.hacker.name %>
-</p>
+      <p>
+        <strong>Category:</strong>
+        <%= @idea.category.name %>
+      </p>
 
-<p>
-  <strong>Status:</strong>
-  <%= @idea.status %>
-</p>
+      <p>
+        <strong>Hacker:</strong>
+        <%= @idea.hacker.name %>
+      </p>
 
-<p>
-  <strong>Progress:</strong>
-  <%= @idea.progress %>
-</p>
+      <p>
+        <strong>Status:</strong>
+        <%= @idea.status %>
+      </p>
 
-<p>
-  <strong>Description:</strong>
-  <%= @idea.description %>
-</p>
+      <p>
+        <strong>Progress:</strong>
+        <%= @idea.progress %>
+      </p>
 
-<p>
-  <strong>Specialties:</strong>
-  <%= @idea.specialties %>
-</p>
+      <p>
+        <strong>Description:</strong>
+        <%= @idea.description %>
+      </p>
 
-<%= link_to 'Edit', edit_idea_path(@idea) %> |
-<%= link_to 'Back', ideas_path %>
+      <p>
+        <strong>Specialties:</strong>
+        <%= @idea.specialties %>
+      </p>
+    </div>
+    <div class="col-sm-6">
+      <h2>Hackathon</h2>
+      <%- if (hackathon = Hackathon.ongoing.detect { |hackathon| @idea.joined?(hackathon) }) %>
+        <%= link_to 'Leave hackathon', leave_hackathon_path(hackathon, idea_id: @idea.id), method: :delete, :class => 'btn btn-warning' %>
+      <%- else %>
+        <% Hackathon.ongoing.each do |hackathon| %>
+          <h3><%= hackathon.title %></h3>
+          <%= link_to 'Join hackathon', join_hackathon_path(hackathon, idea_id: @idea.id), method: :post, :class => 'btn btn-default' %>
+        <% end %>
+      <%- end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <%= if @idea.hacker == current_hacker 
+          link_to 'Edit', edit_idea_path(@idea), :class => 'btn btn-lg btn-primary btn-block'
+        elsif current_hacker.joined? @idea
+          link_to 'Leave', leave_idea_path(@idea), :class => 'btn btn-lg btn-default btn-block',  method: :delete
+        else
+          link_to 'Join', join_idea_path(@idea), :class => 'btn btn-lg btn-default btn-block', method: :post
+        end
+    %>
+  </div>
+</div>

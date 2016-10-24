@@ -1,10 +1,13 @@
 class HackathonsController < ApplicationController
-  before_action :set_hackathon, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_hacker!, except: [:index, :show]
+  before_action :set_hackathon, only: [:show, :edit, :update, :destroy, :join, :leave]
+  before_action :authorizer_hacker!, only: [:update, :destroy]
+  before_action :set_idea, only: [:join, :leave]
 
   # GET /hackathons
   # GET /hackathons.json
   def index
-    @hackathons = Hackathon.all
+    @hackathons = Hackathon.order(start_date: :desc)
   end
 
   # GET /hackathons/1
@@ -61,10 +64,28 @@ class HackathonsController < ApplicationController
     end
   end
 
+  def join
+    @idea.join @hackathon
+    redirect_to @idea, notice: 'Hackathon was successfully joined.' 
+  end
+
+  def leave
+    @idea.leave @hackathon 
+    redirect_to @idea, notice: 'Hackathon was successfully left.' 
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_hackathon
       @hackathon = Hackathon.find(params[:id])
+    end
+
+    def set_idea
+      @idea = Idea.find(params[:idea_id])
+    end
+
+    def authorizer_hacker!
+      @hackathon.hacker == current_hacker
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

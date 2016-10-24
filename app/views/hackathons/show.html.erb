@@ -1,19 +1,22 @@
-<p id="notice"><%= notice %></p>
+<div class="container">
 
-<p>
-  <strong>Title:</strong>
-  <%= @hackathon.title %>
-</p>
+  <p id="notice"><%= notice %></p>
+  <h1><%= @hackathon.title %></h1>
 
-<p>
-  <strong>Start date:</strong>
-  <%= @hackathon.start_date %>
-</p>
+  <p>
+    <strong>Start date:</strong>
+    <%= @hackathon.start_date %>
+  </p>
 
-<p>
-  <strong>End date:</strong>
-  <%= @hackathon.end_date %>
-</p>
+  <p>
+    <strong>End date:</strong>
+    <%= @hackathon.end_date %>
+  </p>
 
-<%= link_to 'Edit', edit_hackathon_path(@hackathon) %> |
-<%= link_to 'Back', hackathons_path %>
+  <p>
+    <strong>Ideas:</strong>
+    <%= render @hackathon.ideas %>
+  </p>
+
+  <%= link_to 'Edit', edit_hackathon_path(@hackathon) , :class => 'btn btn-lg btn-default btn-block' %>
+</div>

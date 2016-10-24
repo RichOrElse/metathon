@@ -10,22 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161021043843) do
+ActiveRecord::Schema.define(version: 20161024083843) do
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name", unique: true, using: :btree
-  end
-
-  create_table "collaboration_projects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "hackathon_id", null: false
-    t.integer  "idea_id",      null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.index ["hackathon_id"], name: "index_collaboration_projects_on_hackathon_id", using: :btree
-    t.index ["idea_id"], name: "index_collaboration_projects_on_idea_id", using: :btree
   end
 
   create_table "collaborations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -36,6 +27,8 @@ ActiveRecord::Schema.define(version: 20161021043843) do
     t.datetime "updated_at", null: false
     t.index ["hacker_id"], name: "index_collaborations_on_hacker_id", using: :btree
     t.index ["idea_id"], name: "index_collaborations_on_idea_id", using: :btree
+    t.index ["project_id", "idea_id", "hacker_id"], name: "index_collaborations_on_project_id_and_idea_id_and_hacker_id", unique: true, using: :btree
+    t.index ["project_id"], name: "index_collaborations_on_project_id", using: :btree
   end
 
   create_table "hackathons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -70,21 +63,33 @@ ActiveRecord::Schema.define(version: 20161021043843) do
   create_table "ideas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "category_id"
     t.integer  "hacker_id"
-    t.integer  "status",                    default: 0
-    t.integer  "progress",                  default: 0
-    t.string   "title"
+    t.integer  "status",                    default: 0, null: false
+    t.integer  "progress",                  default: 0, null: false
+    t.string   "title",                                 null: false
     t.string   "description"
     t.text     "specialties", limit: 65535
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.index ["category_id"], name: "index_ideas_on_category_id", using: :btree
+    t.index ["hacker_id", "title"], name: "index_ideas_on_hacker_id_and_title", unique: true, using: :btree
     t.index ["hacker_id"], name: "index_ideas_on_hacker_id", using: :btree
   end
 
-  add_foreign_key "collaboration_projects", "hackathons"
-  add_foreign_key "collaboration_projects", "ideas"
+  create_table "projects", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "hackathon_id"
+    t.integer  "idea_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["hackathon_id", "idea_id"], name: "index_projects_on_hackathon_id_and_idea_id", unique: true, using: :btree
+    t.index ["hackathon_id"], name: "index_projects_on_hackathon_id", using: :btree
+    t.index ["idea_id"], name: "index_projects_on_idea_id", using: :btree
+  end
+
   add_foreign_key "collaborations", "hackers"
   add_foreign_key "collaborations", "ideas"
+  add_foreign_key "collaborations", "projects"
   add_foreign_key "ideas", "categories"
   add_foreign_key "ideas", "hackers"
+  add_foreign_key "projects", "hackathons"
+  add_foreign_key "projects", "ideas"
 end
